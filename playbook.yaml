@@ -1,0 +1,24 @@
+---
+- hosts: 'localhosts'
+  gather_facts: no
+  become: true
+  tasks:
+  - name: '--> Bajar el proyecto desde Github'
+    ansible.builtin.git:
+      repo: 'https://github.com/karkori/devops-test.git'
+      dest: /app
+
+  - name: '--> Build image'
+    command: 'docker build -t devops-test /app'
+
+  - name: '--> Create Container'
+    command: 'docker container create devops-test'
+
+  - name: '--> Docker commit'
+    shell: 'docker commit $(docker ps -alq) bourarach/devops-test:from-ansible'
+  
+  - name: '--> Login to Dockerhub'
+    shell: 'docker login --username=username --password=password'
+
+  - name: '--> Push to Dockerhub'
+    shell: 'docker push bourarach/devops-test:from-ansible'
