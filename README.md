@@ -14,6 +14,7 @@ sudo docker run --rm --privileged -v /var/lib/docker -p 80:8080 --cap-add=NET_AD
 ```
 in my case I am running the container with the --privileged argument because I had problems launching the docker service with the dockerd command.
 
+#### Run the ssh service
 In this images I have created an configured image with all the necessary tools including ssh. Once the container is running first make sure that the ssh service is running on the remote server:
 ```
 service ssh status
