@@ -3,7 +3,7 @@
   gather_facts: no
   become: true
   tasks:
-  - name: '--> Bajar el proyecto desde Github'
+  - name: '--> Pull project from Github'
     ansible.builtin.git:
       repo: 'https://github.com/karkori/devops-test.git'
       dest: /app
