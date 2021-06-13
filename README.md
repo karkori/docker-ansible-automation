@@ -7,7 +7,14 @@ In this project I have created a playbook to automate the docker image creation 
 ## SSH configuration
 To run properly this playbook you must first have the ssh-server properly configured.
 ### server side
-With the dockerfile, I have created an image configured with all the necessary tools including ssh. First make sure the ssh service is running on the remote server:
+#### Run the docker image
+This Docker image is already hosted on Dockerhub. You just need to run the container:
+```
+sudo docker run --rm --privileged -v /var/lib/docker -p 80:8080 --cap-add=NET_ADMIN -it bourarach/ubuntu-docker:3 sh
+```
+in my case I am running the container with the --privileged argument because I had problems launching the docker service with the dockerd command.
+
+In this images I have created an configured image with all the necessary tools including ssh. Once the container is running first make sure that the ssh service is running on the remote server:
 ```
 service ssh status
 ```
@@ -19,3 +26,26 @@ In this image we are also running docker within docker, so we must be sure that 
 ```
 dockerd &
 ```
+### Client side
+We have to secure the ssh keys to be able to authenticate to the remote server. We can do it with:
+```
+ssh-keygen
+```
+
+in case of errors:
+```
+ ssh-keygen -R 172.17.0.2
+```
+Copying/installing the SSH keys to the remote server:
+```
+ssh-copy-id -i ~/.ssh/id_rsa root@172.17.0.2
+```
+## Run Ansible Playbook
+To run the Ansible playbook we must be located within the root directory of the project and run:
+```
+ansible-playbook -i hosts playbook.yaml
+```
+With this command we are able to:
+-  Pull the code from your GitLab code (with Ansible!)
+-  Build the Docker image
+-  Push the image
