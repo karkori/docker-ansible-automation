@@ -46,6 +46,6 @@ To run the Ansible playbook we must be located within the root directory of the 
 ansible-playbook -i hosts playbook.yaml
 ```
 With this command we are able to:
--  Pull the code from your GitLab code (with Ansible!)
+-  Pull the code from your GitLab code
 -  Build the Docker image
 -  Push the image
